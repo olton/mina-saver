@@ -32,7 +32,7 @@ async function processSave () {
 
         if (liquid >= liquidToSave) {
             amount = liquid - fee
-            cmd = command.replace("%AMOUNT%", amount)
+            cmd = command.replace("%AMOUNT%", amount.toFixed(9))
             log("Run: " + cmd)
             exec(cmd, async (error, stdout, stderr) => {
                 let result

@@ -16,15 +16,19 @@ const command = `mina client send-payment -amount %AMOUNT%  -receiver ${receiver
 const interval = 1000 * 60 * 1
 
 async function processSave () {
-    let amount, cmd
+    let amount, cmd, total, liquid, balance
+
     const transInPool = await getTransactionInPool(address)
     log(`Trans in pool ${transInPool.length}`)
+
     if (transInPool.length === 0) {
-        const balance = await getAddressBalance(address)
-        const total = balance.total / 10**9
-        const liquid = balance.liquid / 10**9
+        balance = await getAddressBalance(address)
+
+        total = +balance.total / 10**9
+        liquid = +balance.liquid / 10**9
 
         log("Total: " + (total) + " mina, " + "Liquid: " + (liquid) + " mina, " + "Ready to save: " + (liquid >= liquidToSave))
+        // console.log("Amount: ", (liquid - fee))
 
         if (liquid >= liquidToSave) {
             amount = liquid - fee
